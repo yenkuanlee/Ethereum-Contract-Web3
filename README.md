@@ -24,3 +24,12 @@ pip install py-solc
   - Backend : Web3 (Python3.5+)
   - API : Restful (Java servlet)
   - Web : Javascript
+
+## Compile API
+```
+# chahge python path in java code
+$ javac -cp /opt/tomcat/apache-tomcat-7.0.72/lib/servlet-api.jar:/tmp/json.jar CheckContract.java # compile three java code~
+$ mv CheckContract.class /opt/tomcat/apache-tomcat-7.0.72/webapps/ROOT/WEB-INF/classes/ # move three java class to tomcat path
+$ sudo /opt/tomcat/apache-tomcat-7.0.72/bin/shutdown.sh
+$ sudo /opt/tomcat/apache-tomcat-7.0.72/bin/startup.sh
+```
