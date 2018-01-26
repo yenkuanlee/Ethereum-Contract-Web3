@@ -4,6 +4,7 @@ from web3 import Web3, HTTPProvider, TestRPCProvider
 from solc import compile_source
 from web3.contract import ConciseContract
 import sys
+import sqlite3
 
 #host = '150.117.122.81'
 #account = '0x12a74e70f5c207d17b869daae374accc1a66eebc'
@@ -11,10 +12,11 @@ import sys
 host = sys.argv[1]
 account = sys.argv[2]
 passwd = sys.argv[3]
-answer = sys.argv[4]
+question = sys.argv[4]
+answer = sys.argv[5]
 duration = 20200101
 try:
-    duration = int(sys.argv[5])
+    duration = int(sys.argv[6])
 except:
     pass
 
@@ -117,3 +119,10 @@ time.sleep(10)
 print('Setting value to: Nihao')
 print('Contract value: {}'.format(contract_instance.greet()))
 '''
+
+conn = sqlite3.connect('/tmp/answer_game.db')
+c = conn.cursor()
+c.execute("create table if not exists question_list(contract_address text, abi text, account text, question text, answer text, deadline text);")
+
+c.execute("insert into question_list values('"+contract_address+"','"+json.dumps(contract_interface['abi'])+"','"+account+"','"+question+"','"+answer+"','"+str(duration)+"');")
+conn.commit()

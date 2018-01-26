@@ -13,10 +13,10 @@ public class ContractDeploy extends HttpServlet {
       // Do required initialization
       message = "Hello World";
    }
-	public static JSONObject contract_deploy(String host,String account,String passwd,String answer, String duration) throws IOException {
+	public static JSONObject contract_deploy(String host,String account,String passwd,String question, String answer, String duration) throws IOException {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.redirectErrorStream(true);
-                pb.command("python3", "/home/yenkuanlee/TEST/contract/q.py",host,account,passwd,answer,duration);
+                pb.command("python3", "/home/yenkuanlee/TEST/contract/q.py",host,account,passwd,question,answer,duration);
                 Process process = pb.start();
                 java.io.InputStream inputStream = process.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -54,7 +54,7 @@ public class ContractDeploy extends HttpServlet {
 	
 
 	JSONObject result = new JSONObject();
-	result = contract_deploy(host,account,passwd,answer,duration);
+	result = contract_deploy(host,account,passwd,question,answer,duration);
 	try{
 		result.put("question",question);
 		result.put("answer",answer);

@@ -4,6 +4,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import org.json.JSONObject;
 
+
+
 // Extend HttpServlet class
 public class CheckContract extends HttpServlet {
  
