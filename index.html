@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<style type="text/css">
+    body {
+        font-family: Microsoft JhengHei !important
+    }
+</style>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <title>Blockchain QA</title>
+
+</head>
+
+<body>
+    <div class="container">
+        <!-- Content here -->
+        <div class="row" style="padding-top:10px">
+            <div class="col-3">
+                <h1>Question List</h1>
+            </div>
+            <div class="col-sm" style="padding-top:5px">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newQuestionModal">New Question</button>
+            </div>
+        </div>
+
+        <hr/>
+        <div id="q_list_group" class="list-group mb-5">
+            <div id="q_template" class="list-group-item list-group-item-action flex-column align-items-start" hidden>
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Q
+                        <span class="q_index"></span>
+                    </h5>
+                    <small class="text-muted">Deadline:
+                        <span class="deadline"></span>
+                    </small>
+                </div>
+                <p class="mb-1 q_content"></p>
+                <hr/>
+                <div class="d-flex w-100 justify-content-between">
+                    <small class="text-muted q_address"></small>
+                    <button class="btn btn-info re_btn">Reply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newQuestionModal" tabindex="-1" role="dialog" aria-labelledby="newQuestionModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">New Question</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="new_form">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gridCheck">
+                                <label class="form-check-label" for="gridCheck">
+                                    Check Answer Mode
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" name="host" class="form-control host" id="host" placeholder="127.0.0.1">
+                        </div>
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label for="account">Account</label>
+                                <input type="email" name="account" class="form-control" id="account" placeholder="Account">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="passwd">Password</label>
+                                <input type="password" name="passwd" class="form-control" id="passwd" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="question">Question</label>
+                            <textarea class="form-control" name="question" id="question" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="answer">Answer</label>
+                            <textarea class="form-control" name="answer" id="answer" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="deadline">Deadline</label>
+                            <input type="text" class="form-control" name="deadline" id="deadline" placeholder="20180101">
+                        </div>
+                        <div class="form-group">
+                            <label for="contract_address_t">Contract Address</label>
+                            <select type="text" class="form-control" name="contract_address" id="contract_address_t" disabled>
+                                <option value="0">Select a Contract Address</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="mt-1" id="ans_check">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success" id="ch_btn_t" disabled>Check</button>
+                    <button type="button" class="btn btn-primary" id="new_btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Reply</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="r_form">
+                        <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" name="host" class="form-control host" id="r_host" placeholder="127.0.0.1">
+                        </div>
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label for="account">Account</label>
+                                <input type="email" name="account" class="form-control" id="r_account" placeholder="Account">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="passwd">Password</label>
+                                <input type="password" name="passwd" class="form-control" id="r_passwd" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="answer">Answer</label>
+                            <textarea class="form-control" name="answer" id="r_answer" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="contract_address">Contract Address</label>
+                            <input type="text" class="form-control" name="contract_address" id="r_contract_address">
+                        </div>
+                    </form>
+                    <div class="mt-1" id="ans_list">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success" id="ch_btn">Check</button>
+                    <button type="button" class="btn btn-primary" id="r_btn">Reply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
