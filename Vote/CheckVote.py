@@ -8,7 +8,7 @@ import sys
 host = '150.117.122.81'
 #account = '0x12a74e70f5c207d17b869daae374accc1a66eebc'
 passwd = 'OR51M59'
-contract_address = '0x4F716227259E5FA2f97aF702cAfA8d5978Abf80e'
+contract_address = '0xeBd3ab40f732cCCb89aA94e04f1649FdEBe092Ee'
 #host = sys.argv[1]
 #passwd = sys.argv[2]
 #contract_address = sys.argv[3]
