@@ -39,6 +39,7 @@ public class GetVote extends HttpServlet {
 		    tmp.put("topic",rs.getString("topic"));
 		    tmp.put("_numProposals",rs.getString("_numProposals"));
 		    tmp.put("prop",rs.getString("prop"));
+		    tmp.put("deadline",rs.getString("deadline"));
 		    result.put(tmp);
 	    }
 	    return result;
@@ -52,6 +53,7 @@ public class GetVote extends HttpServlet {
 
    public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
 
 	JSONObject result = new JSONObject();
 	try{

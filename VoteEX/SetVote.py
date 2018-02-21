@@ -17,6 +17,7 @@ passwd = sys.argv[3]
 topic = sys.argv[4]
 _numProposals = int(sys.argv[5])
 prop = sys.argv[6]
+deadline = sys.argv[7]
 Pdict = dict()
 Plist = prop.split(",,,")
 num = 0
@@ -80,8 +81,8 @@ print("contract abi : "+json.dumps(contract_interface['abi']))
 
 conn = sqlite3.connect('/tmp/vote.db')
 c = conn.cursor()
-c.execute("create table if not exists Vote(contract_address text, account text, topic text, _numProposals int, prop text);")
+c.execute("create table if not exists Vote(contract_address text, account text, topic text, _numProposals int, prop text, deadline text);")
 
-c.execute("insert into Vote values('"+contract_address+"','"+account+"','"+topic+"',"+str(_numProposals)+",'"+json.dumps(Pdict)+"');")
+c.execute("insert into Vote values('"+contract_address+"','"+account+"','"+topic+"',"+str(_numProposals)+",'"+json.dumps(Pdict)+"', '"+deadline+"');")
 conn.commit()
 

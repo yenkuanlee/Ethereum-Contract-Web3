@@ -13,10 +13,10 @@ public class VoteContractDeploy extends HttpServlet {
       // Do required initialization
       message = "Hello World";
    }
-	public static JSONObject contract_deploy(String host,String account,String passwd,String topic, String Pnum, String prop) throws IOException {
+	public static JSONObject contract_deploy(String host,String account,String passwd,String topic, String Pnum, String prop, String deadline) throws IOException {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.redirectErrorStream(true);
-                pb.command("python3", "/home/yenkuanlee/TEST/Ethereum-Contract-Web3/VoteEX/SetVote.py",host,account,passwd,topic,Pnum,prop);
+                pb.command("python3", "/home/yenkuanlee/TEST/Ethereum-Contract-Web3/VoteEX/SetVote.py",host,account,passwd,topic,Pnum,prop,deadline);
                 Process process = pb.start();
                 java.io.InputStream inputStream = process.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -51,14 +51,16 @@ public class VoteContractDeploy extends HttpServlet {
 	String topic = request.getParameter("topic");
 	String Pnum = request.getParameter("Pnum");
 	String prop = request.getParameter("prop");
+	String deadline = request.getParameter("deadline");
 	
 
 	JSONObject result = new JSONObject();
-	result = contract_deploy(host,account,passwd,topic,Pnum,prop);
+	result = contract_deploy(host,account,passwd,topic,Pnum,prop,deadline);
 	try{
 		result.put("topic",topic);
 		result.put("Pnum",Pnum);
 		result.put("prop",prop);
+		result.put("deadline",deadline);
 		result.write(response.getWriter());
 	}catch(Exception e){}
       

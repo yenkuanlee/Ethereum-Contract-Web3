@@ -1,7 +1,7 @@
 import sqlite3
 conn = sqlite3.connect('/tmp/vote.db')
 c = conn.cursor()
-c.execute("create table if not exists User(Uhash text, Uname text);")
+c.execute("create table if not exists User(Uhash text, Uname text, Upasswd text, role text);")
 
 f = open("AllUser.txt","r")
 while True:
@@ -10,5 +10,5 @@ while True:
         break
     line = line.replace("\n","")
     tmp = line.split("\t")
-    c.execute("insert into User values('"+tmp[1]+"','voter"+tmp[0]+"');")
+    c.execute("insert into User values('"+tmp[1]+"','voter"+tmp[0]+"','null','tmpp');")
     conn.commit()
