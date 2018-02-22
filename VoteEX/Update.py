@@ -22,14 +22,23 @@ contract_instance = w3.eth.contract(abi, contract_address, ContractFactoryClass=
 
 conn = sqlite3.connect('/tmp/vote.db')
 c = conn.cursor()
-c.execute("create table if not exists Vote(contract_address text, account text, topic text, _numProposals int, prop text);")
+c.execute("create table if not exists Vote(contract_address text, account text, topic text, _numProposals int, prop text, deadline text);")
 tmp = c.execute("select * from Vote where contract_address = '"+contract_address+"';")
 for x in tmp:
-    Jstatus = json.loads(x[len(x)-1])
+    Jstatus = json.loads(x[len(x)-2])
     for y in Jstatus:
         #print(Jstatus[y]["num"])
         #print(contract_instance.GetVoteCount(int(Jstatus[y]["num"])))
-        Jstatus[y]["cnt"] = int(contract_instance.GetVoteCount(int(Jstatus[y]["num"])))
-    print(Jstatus)
-c.execute("update Vote set prop = '"+json.dumps(Jstatus)+"' where contract_address = '"+contract_address+"';")
-conn.commit()
+        try:
+            Jstatus[y]["cnt"] = int(contract_instance.GetVoteCount(int(Jstatus[y]["num"])))
+            #print("RIGHT : "+str(Jstatus[y]["num"]))
+        except Exception as e: 
+            print(e)
+            #print(contract_instance.GetVoteCount(int(Jstatus[y]["num"])))
+            print(y+" ERROR : "+str(Jstatus[y]["num"]))
+    #print(Jstatus)
+try:
+    c.execute("update Vote set prop = '"+json.dumps(Jstatus)+"' where contract_address = '"+contract_address+"';")
+    conn.commit()
+except:
+    pass
