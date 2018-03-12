@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0"
+  metadata-complete="true">
+
+<filter>
+  <filter-name>CorsFilter</filter-name>
+  <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+</filter>
+<filter-mapping>
+  <filter-name>CorsFilter</filter-name>
+  <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+
+
+  <display-name>Welcome to Tomcat</display-name>
+  <description>
+     Welcome to Tomcat
+  </description>
+
+
+<servlet>
+   <servlet-name>test</servlet-name>
+   <servlet-class>test</servlet-class>
+</servlet>
+
+<servlet-mapping>
+   <servlet-name>test</servlet-name>
+   <url-pattern>/TEST</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>ContractDeploy</servlet-name>
+   <servlet-class>ContractDeploy</servlet-class>
+</servlet>
+
+<servlet-mapping>
+   <servlet-name>ContractDeploy</servlet-name>
+   <url-pattern>/ContractDeploy</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>AnswerQuestion</servlet-name>
+   <servlet-class>AnswerQuestion</servlet-class>
+</servlet>
+
+<servlet-mapping>
+   <servlet-name>AnswerQuestion</servlet-name>
+   <url-pattern>/AnswerQuestion</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>CheckContract</servlet-name>
+   <servlet-class>CheckContract</servlet-class>
+</servlet>
+
+<servlet-mapping>
+   <servlet-name>CheckContract</servlet-name>
+   <url-pattern>/CheckContract</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>GetQuestion</servlet-name>
+   <servlet-class>GetQuestion</servlet-class>
+</servlet>
+
+<servlet-mapping>
+   <servlet-name>GetQuestion</servlet-name>
+   <url-pattern>/GetQuestion</url-pattern>
+</servlet-mapping>
+
+
+
+
+
+<servlet>
+   <servlet-name>GetVoter</servlet-name>
+   <servlet-class>GetVoter</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>GetVoter</servlet-name>
+   <url-pattern>/GetVoter</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>GetVote</servlet-name>
+   <servlet-class>GetVote</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>GetVote</servlet-name>
+   <url-pattern>/GetVote</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>VoteContractDeploy</servlet-name>
+   <servlet-class>VoteContractDeploy</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>VoteContractDeploy</servlet-name>
+   <url-pattern>/VoteContractDeploy</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>VoteRight</servlet-name>
+   <servlet-class>VoteRight</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>VoteRight</servlet-name>
+   <url-pattern>/VoteRight</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>Vote</servlet-name>
+   <servlet-class>Vote</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>Vote</servlet-name>
+   <url-pattern>/Vote</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>CheckVoteContract</servlet-name>
+   <servlet-class>CheckVoteContract</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>CheckVoteContract</servlet-name>
+   <url-pattern>/CheckVoteContract</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+   <servlet-name>UpdateVoter</servlet-name>
+   <servlet-class>UpdateVoter</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>UpdateVoter</servlet-name>
+   <url-pattern>/UpdateVoter</url-pattern>
+</servlet-mapping>
+
+
+</web-app>
