@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 // Extend HttpServlet class
-public class GetVoter extends HttpServlet {
+public class UpdateVoter extends HttpServlet {
  
    private String message;
    public static Connection connection = null;
@@ -22,39 +22,33 @@ public class GetVoter extends HttpServlet {
       message = "Hello World";
    }
 
-    public JSONArray selectAll()throws SQLException{
+    public void UpdateDB(String Uname,String OldPasswd,String NewPasswd)throws SQLException{
 	    JSONArray result = new JSONArray();
 	    try{
-	    String SelectSQL = "select * from User;";
+	    String SelectSQL = "Update user set Upasswd = '"+NewPasswd+"' where Uname = '"+Uname+"' and Upasswd = '"+OldPasswd+"';";
 	    Class.forName("org.sqlite.JDBC");
 	    connection = DriverManager.getConnection("jdbc:sqlite:/tmp/vote.db");
 	    Statement statement = null;
-            ResultSet rs = null;
             statement = connection.createStatement();
-            rs = statement.executeQuery(SelectSQL);
-	    while(rs.next()){
-		    JSONObject tmp = new JSONObject();
-		    tmp.put("Uhash",rs.getString("Uhash"));
-		    tmp.put("host",rs.getString("host"));
-		    tmp.put("Uname",rs.getString("Uname"));
-		    tmp.put("Upasswd",rs.getString("Upasswd"));
-		    tmp.put("tag",rs.getString("tag"));
-		    tmp.put("role",rs.getString("role"));
-		    result.put(tmp);
-	    }
-	    return result;
+            statement.executeUpdate(SelectSQL);
+	    return;
 	    }catch(Exception e){
 		    e.printStackTrace();
-		    return result;
+		    return;
 	    }
     }	
 
    public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
+      String Uname = request.getParameter("Uname");
+      String OldPasswd = request.getParameter("OldPasswd");
+      String NewPasswd = request.getParameter("NewPasswd");
+
+
 	JSONObject result = new JSONObject();
 	try{
-		result.put("voters_list",selectAll());
+		UpdateDB(Uname,OldPasswd,NewPasswd);
 		result.put("result","0");
 		result.write(response.getWriter());
 	}catch(Exception e){}
