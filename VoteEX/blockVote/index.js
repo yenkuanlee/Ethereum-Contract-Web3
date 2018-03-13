@@ -157,7 +157,7 @@ var flag = 1
 $(document).ready(function () {
     getVoteAPI()
 
-    fetch('http://localhost:8888/GetVoter', {
+    fetch('http://localhost:8080/GetVoter', {
         method: 'GET'
     }).then(function (res) {
         return res.json()
@@ -191,9 +191,9 @@ $(document).ready(function () {
             let count = $(elm).val()
             console.log(count)
             if (count > 0) {
-                // console.log('http://localhost:8888/Vote?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + ca + '&to_Voter=' + voter + '&cnt=' + count)
+                // console.log('http://localhost:8080/Vote?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + ca + '&to_Voter=' + voter + '&cnt=' + count)
                 return new Promise((rev, rej) => {
-                    fetch('http://localhost:8888/Vote?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + ca + '&to_Voter=' + voter + '&cnt=' + count, {
+                    fetch('http://localhost:8080/Vote?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + ca + '&to_Voter=' + voter + '&cnt=' + count, {
                         method: 'GET'
                     }).then(function (res) {
                         return res.json()
@@ -308,7 +308,7 @@ $(document).ready(function () {
         })
         $('#voteModal').modal('hide')
         $('body').loading()
-        fetch(encodeURI('http://localhost:8888/VoteContractDeploy?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&topic=' + topic + '&Pnum=' + Pnum + '&prop=' + prop.join(',,,') + '&deadline=' + deadline), {
+        fetch(encodeURI('http://localhost:8080/VoteContractDeploy?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&topic=' + topic + '&Pnum=' + Pnum + '&prop=' + prop.join(',,,') + '&deadline=' + deadline), {
             method: 'GET'
         }).then(function (res) {
             return res.json()
@@ -334,7 +334,7 @@ $(document).ready(function () {
 })
 
 function getVoteAPI() {
-    fetch('http://localhost:8888/GetVote', {
+    fetch('http://localhost:8080/GetVote', {
             method: 'GET'
         })
         .then(function (res) {
@@ -350,7 +350,7 @@ function getVoteAPI() {
 
 function setVoteRight(add) {
     if ($('#checkall').is(':checked')) {
-        fetch(encodeURI('http://localhost:8888/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + add + '&voter=AllUser'), {
+        fetch(encodeURI('http://localhost:8080/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + add + '&voter=AllUser'), {
             method: 'GET'
         }).then(function (res) {
             return res.json()
@@ -362,7 +362,7 @@ function setVoteRight(add) {
     } else {
         var pary = voteRightAry.map(elm => {
             return new Promise((rev, rej) => {
-                fetch(encodeURI('http://localhost:8888/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + add + '&voter=' + elm), {
+                fetch(encodeURI('http://localhost:8080/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + add + '&voter=' + elm), {
                     method: 'GET'
                 }).then(function (res) {
                     return res.json()
@@ -585,9 +585,9 @@ function dosignin(data) {
 
     let pa = $('.fakeForm').map((idx, elm) => {
         let ca = $(elm).find('.contract_address').val()
-        // console.log('http://localhost:8888/CheckVoteContract?host='+data.host+'&contract_address='+ca+'&behavior=GetRemainVoteWeight&arg='+data.user)
+        // console.log('http://localhost:8080/CheckVoteContract?host='+data.host+'&contract_address='+ca+'&behavior=GetRemainVoteWeight&arg='+data.user)
         return new Promise((rev, rej) => {
-            fetch('http://localhost:8888/CheckVoteContract?host=' + data.host + '&contract_address=' + ca + '&behavior=GetRemainVoteWeight&arg=' + data.user, {
+            fetch('http://localhost:8080/CheckVoteContract?host=' + data.host + '&contract_address=' + ca + '&behavior=GetRemainVoteWeight&arg=' + data.user, {
                 method: 'GET'
             }).then(function (res) {
                 return res.json()
@@ -636,7 +636,7 @@ function filterChart(data) {
 }
 
 function addQuestion(ser) {
-    fetch('http://localhost:8888/ContractDeploy?' + ser, {
+    fetch('http://localhost:8080/ContractDeploy?' + ser, {
             method: 'GET'
         })
         .then(function (res) {
@@ -655,7 +655,7 @@ function setUserProfile() {
 }
 
 function ansQuestion(ser) {
-    fetch('http://localhost:8888/AnswerQuestion?' + ser, {
+    fetch('http://localhost:8080/AnswerQuestion?' + ser, {
             method: 'GET'
         })
         .then(function (res) {
@@ -670,7 +670,7 @@ function ansQuestion(ser) {
 }
 
 function checkList(ser) {
-    fetch('http://localhost:8888/CheckContract?' + ser + '&behavior=checkList', {
+    fetch('http://localhost:8080/CheckContract?' + ser + '&behavior=checkList', {
             method: 'GET'
         })
         .then(function (res) {
@@ -685,7 +685,7 @@ function checkList(ser) {
 }
 
 function checkAnswer(ser) {
-    fetch('http://localhost:8888/CheckContract?' + ser + '&behavior=checkAnswer', {
+    fetch('http://localhost:8080/CheckContract?' + ser + '&behavior=checkAnswer', {
             method: 'GET'
         })
         .then(function (res) {
