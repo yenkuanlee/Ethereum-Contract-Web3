@@ -26,4 +26,8 @@ contract_address = Jline['contract_address']
 # Contract instance in concise mode
 contract_instance = w3.eth.contract(abi, contract_address, ContractFactoryClass=ConciseContract)
 
-print('Contract value: {}'.format(contract_instance.ModifyPasswd("voter2","null","123", transact={'from': account})))
+Uname = sys.argv[1]
+op = sys.argv[2]
+np = sys.argv[3]
+contract_instance.ModifyPasswd(Uname,op,np, transact={'from': account})
+#print('Contract value: {}'.format(contract_instance.ModifyPasswd(Uname,op,np, transact={'from': account})))

@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 import org.json.JSONObject;
 
 // Extend HttpServlet class
-public class GetUserInfo extends HttpServlet {
+public class ModifyPasswd extends HttpServlet {
  
    private String message;
 
@@ -13,36 +13,33 @@ public class GetUserInfo extends HttpServlet {
       // Do required initialization
       message = "Hello World";
    }
-	public static JSONObject contract_deploy(String Uname, String Upasswd) throws IOException {
+	public static JSONObject vote(String Uname, String op, String np) throws IOException {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.redirectErrorStream(true);
-                pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/User/GetInfo.py",Uname,Upasswd);
+                pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/User/ModifyPasswd.py",Uname,op,np);
                 Process process = pb.start();
                 java.io.InputStream inputStream = process.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line = null;
 		JSONObject result = new JSONObject();
-                while ((line = reader.readLine()) != null) {
-			try{
-				result.put("output",line);
-			}catch(Exception e){}
-                }
+		try{
+		}catch(Exception e){}
 		return result;
         }
 
    public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 	String Uname = request.getParameter("Uname");
-	String Upasswd = request.getParameter("Upasswd");
+	String op = request.getParameter("op");
+	String np = request.getParameter("np");
 	
 
 	JSONObject result = new JSONObject();
-	result = contract_deploy(Uname,Upasswd);
+	result = vote(Uname,op,np);
 	try{
 		result.put("result","0");
 		result.write(response.getWriter());
 	}catch(Exception e){}
-
    }
 
    public void destroy() {

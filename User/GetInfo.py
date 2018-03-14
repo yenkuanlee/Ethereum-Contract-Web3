@@ -28,4 +28,4 @@ contract_instance = w3.eth.contract(abi, contract_address, ContractFactoryClass=
 
 Uname = sys.argv[1]
 Upasswd = sys.argv[2]
-print('Contract value: {}'.format(contract_instance.GetInfo(Uname,Upasswd)))
+print(json.dumps(contract_instance.GetInfo(Uname,Upasswd)))
