@@ -167,5 +167,22 @@
    <url-pattern>/UpdateVoter</url-pattern>
 </servlet-mapping>
 
+<servlet>
+   <servlet-name>GetUserInfo</servlet-name>
+   <servlet-class>GetUserInfo</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>GetUserInfo</servlet-name>
+   <url-pattern>/GetUserInfo</url-pattern>
+</servlet-mapping>
+
+<servlet>
+   <servlet-name>ModifyPasswd</servlet-name>
+   <servlet-class>ModifyPasswd</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>ModifyPasswd</servlet-name>
+   <url-pattern>/ModifyPasswd</url-pattern>
+</servlet-mapping>
 
 </web-app>
