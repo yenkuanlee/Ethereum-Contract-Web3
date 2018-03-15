@@ -185,4 +185,13 @@
    <url-pattern>/ModifyPasswd</url-pattern>
 </servlet-mapping>
 
+<servlet>
+   <servlet-name>GetAppInfo</servlet-name>
+   <servlet-class>GetAppInfo</servlet-class>
+</servlet>
+<servlet-mapping>
+   <servlet-name>GetAppInfo</servlet-name>
+   <url-pattern>/GetAppInfo</url-pattern>
+</servlet-mapping>
+
 </web-app>
