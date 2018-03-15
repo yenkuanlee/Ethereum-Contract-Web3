@@ -107,17 +107,27 @@ c.execute("insert into Vote values('"+contract_address+"','"+account+"','"+topic
 conn.commit()
 
 
+f = open('/home/localadmin/Ethereum-Contract-Web3/Application/app.json','r')
+line = f.readline()
+Jline = json.loads(line)
+f.close()
+
+Aabi = Jline['abi']
+Acontract_address = Jline['contract_address']
+Acontract_instance = w3.eth.contract(Aabi, Acontract_address, ContractFactoryClass=ConciseContract)
+
 import ObjectNode
 MCU = ObjectNode.ObjectNode("MCU")
 accountPeer = MCU.ObjectPeer("account")
 propPeer = MCU.ObjectPeer("prop")
 deadlinePeer = MCU.ObjectPeer("deadline")
 
-Vgod = ObjectNode.ObjectNode("Vote") ### will retrive from smart contract
+#Vgod = ObjectNode.ObjectNode("Vote") ### will retrive from smart contract
+VoteHash = Acontract_instance.GetOhash("Vote")
 
 a = ObjectNode.ObjectNode(topic)
 a.AddHash(accountPeer,account)
 a.AddHash(propPeer,prop)
 a.AddHash(deadlinePeer,deadline)
-NewHash = AddHash(Vgod.ObjectHash,a.ObjectHash,contract_address)
-print(NewHash)
+NewHash = AddHash(VoteHash,a.ObjectHash,contract_address)
+Acontract_instance.setNode("Vote",NewHash, transact={'from': account})
