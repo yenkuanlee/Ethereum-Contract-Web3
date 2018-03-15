@@ -1,3 +1,5 @@
+import subprocess
+import ObjectNode
 import json
 import time
 from web3 import Web3, HTTPProvider, TestRPCProvider
@@ -7,6 +9,24 @@ import sys
 import sqlite3
 import os
 Cpath = os.path.dirname(os.path.realpath(__file__))
+
+def AddHash(Ahash, Bhash,ObjectName):
+    cmd = "timeout 10 ipfs object patch add-link "+Ahash+" "+ObjectName+" "+Bhash
+    output = "OUTPUT ERROR"
+    try:
+        output = subprocess.check_output(cmd, shell=True)
+        output = output.decode("utf-8")
+        if "Error" in output:
+            return output
+    except:
+        return output
+    NewOhash = output.split("\n")[0]
+    cmd = "timeout 10 ipfs pin add "+NewOhash
+    output = subprocess.check_output(cmd, shell=True)
+    output = output.decode("utf-8")
+    if "Error" in output:
+        return output
+    return NewOhash
 
 #host = '150.117.122.81'
 #account = '0x12a74e70f5c207d17b869daae374accc1a66eebc'
@@ -86,3 +106,18 @@ c.execute("create table if not exists Vote(contract_address text, account text, 
 c.execute("insert into Vote values('"+contract_address+"','"+account+"','"+topic+"',"+str(_numProposals)+",'"+json.dumps(Pdict)+"', '"+deadline+"');")
 conn.commit()
 
+
+import ObjectNode
+MCU = ObjectNode.ObjectNode("MCU")
+accountPeer = MCU.ObjectPeer("account")
+propPeer = MCU.ObjectPeer("prop")
+deadlinePeer = MCU.ObjectPeer("deadline")
+
+Vgod = ObjectNode.ObjectNode("Vote") ### will retrive from smart contract
+
+a = ObjectNode.ObjectNode(topic)
+a.AddHash(accountPeer,account)
+a.AddHash(propPeer,prop)
+a.AddHash(deadlinePeer,deadline)
+NewHash = AddHash(Vgod.ObjectHash,a.ObjectHash,contract_address)
+print(NewHash)
