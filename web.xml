@@ -194,4 +194,14 @@
    <url-pattern>/GetAppInfo</url-pattern>
 </servlet-mapping>
 
+<servlet>
+    <servlet-name>GetTicketNumber</servlet-name>
+    <servlet-class>GetTicketNumber</servlet-class>
+ </servlet>
+ <servlet-mapping>
+    <servlet-name>GetTicketNumber</servlet-name>
+    <url-pattern>/GetTicketNumber</url-pattern>
+ </servlet-mapping>
+
+
 </web-app>
