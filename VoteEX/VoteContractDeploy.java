@@ -16,7 +16,7 @@ public class VoteContractDeploy extends HttpServlet {
 	public static JSONObject contract_deploy(String host,String account,String passwd,String topic, String Pnum, String prop, String deadline) throws IOException {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.redirectErrorStream(true);
-                pb.command("python3", "/home/yenkuanlee/TEST/Ethereum-Contract-Web3/VoteEX/SetVote.py",host,account,passwd,topic,Pnum,prop,deadline);
+                pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/VoteEX/SetVote.py",host,account,passwd,topic,Pnum,prop,deadline);
                 Process process = pb.start();
                 java.io.InputStream inputStream = process.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

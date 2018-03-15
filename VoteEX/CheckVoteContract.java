@@ -18,7 +18,7 @@ public class CheckVoteContract extends HttpServlet {
 	public static JSONObject contract_deploy(String host, String contract_address, String behavior, String arg) throws IOException {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.redirectErrorStream(true);
-                pb.command("python3", "/home/yenkuanlee/TEST/Ethereum-Contract-Web3/VoteEX/CheckVote.py",host,contract_address,behavior,arg);
+                pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/VoteEX/CheckVote.py",host,contract_address,behavior,arg);
                 Process process = pb.start();
                 java.io.InputStream inputStream = process.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
