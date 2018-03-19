@@ -18,5 +18,8 @@ for x in load:
     Ulist.append(x[0])
 
 for i in range(len(Slist)):
-    c.execute("update user set Uname = '"+Slist[i][1]+"',Upasswd='"+Slist[i][1]+"',tag='"+Slist[i][0]+"',role='student' where Uname = '"+Ulist[i]+"';")
-    conn.commit()
+    try:
+        c.execute("update user set Uname = '"+Slist[i][1]+"',Upasswd='"+Slist[i][1]+"',tag='C"+Slist[i][0]+"',role='student' where Uname = '"+Ulist[i]+"';")
+        conn.commit()
+    except:
+        print Slist[i]
