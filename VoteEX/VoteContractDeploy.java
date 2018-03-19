@@ -48,9 +48,11 @@ public class VoteContractDeploy extends HttpServlet {
 	String host = request.getParameter("host");
 	String account = request.getParameter("account");
 	String passwd = request.getParameter("passwd");
-	String topic = request.getParameter("topic");
+	//String topic = request.getParameter("topic");
+	String topic = new String(request.getParameter("topic").getBytes("iso-88859-1"), "UTF-8");
 	String Pnum = request.getParameter("Pnum");
-	String prop = request.getParameter("prop");
+	//String prop = request.getParameter("prop");
+	String prop = new String(request.getParameter("prop").getBytes("iso-88859-1"), "UTF-8");
 	String deadline = request.getParameter("deadline");
 	
 
@@ -65,7 +67,7 @@ public class VoteContractDeploy extends HttpServlet {
 	}catch(Exception e){}
       
       // Set response content type
-      ///response.setContentType("text/html");
+      response.setContentType("text/html;charset=UTF-8");
 
       // Actual logic goes here.
       ///PrintWriter out = response.getWriter();
