@@ -49,10 +49,10 @@ public class VoteContractDeploy extends HttpServlet {
 	String account = request.getParameter("account");
 	String passwd = request.getParameter("passwd");
 	//String topic = request.getParameter("topic");
-	String topic = new String(request.getParameter("topic").getBytes("iso-88859-1"), "UTF-8");
+	String topic = new String(request.getParameter("topic").getBytes("iso-8859-1"), "UTF-8");
 	String Pnum = request.getParameter("Pnum");
 	//String prop = request.getParameter("prop");
-	String prop = new String(request.getParameter("prop").getBytes("iso-88859-1"), "UTF-8");
+	String prop = new String(request.getParameter("prop").getBytes("iso-8859-1"), "UTF-8");
 	String deadline = request.getParameter("deadline");
 	
 
