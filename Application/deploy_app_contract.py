@@ -1,4 +1,5 @@
 import json
+import os
 import time
 from web3 import Web3, HTTPProvider, TestRPCProvider
 from solc import compile_source
@@ -55,6 +56,8 @@ Joutput['abi'] = contract_interface['abi']
 Joutput['contract_address'] = contract_address
 fw.write(json.dumps(Joutput))
 fw.close()
+
+os.system("echo '{ \"Data\": \"Vote\" }' | ipfs object put")
 
 print("account : "+account)
 print("contract address : "+contract_address)
