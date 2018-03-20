@@ -39,7 +39,8 @@ public class GetTicketNumber extends HttpServlet {
       throws ServletException, IOException {
 	String host = request.getParameter("host");
 	String contract_address = request.getParameter("contract_address");
-	String prop = request.getParameter("prop");
+	//String prop = request.getParameter("prop");
+	String prop = new String(request.getParameter("prop").getBytes("iso-8859-1"), "UTF-8");
 	
 
 	JSONObject result = new JSONObject();
@@ -48,6 +49,8 @@ public class GetTicketNumber extends HttpServlet {
 		result.put("result","0");
 		result.write(response.getWriter());
 	}catch(Exception e){}
+
+	response.setContentType("text/html;charset=UTF-8");
 
    }
 
