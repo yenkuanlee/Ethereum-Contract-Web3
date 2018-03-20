@@ -320,7 +320,7 @@ $(document).ready(function () {
         let opsw = $('#e_signin_o_psw').val()
         let npsw = $('#e_signin_psw').val()
 
-        if (userPair[user] && userPair[user].Upasswd == opsw) {
+        if (opsw === sessionStorage.getItem('psw')) {
             flag = 0
             fetch('http://140.92.143.82:8080/ModifyPasswd?Uname=' + user + '&op=' + opsw + '&np=' + npsw, {
                     method: 'GET'
