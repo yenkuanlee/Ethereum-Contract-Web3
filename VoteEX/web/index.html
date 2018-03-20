@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<style type="text/css">
+    body {
+        font-family: Microsoft JhengHei !important
+    }
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css" />
+    <title>Blockchain Vote</title>
+
+</head>
+
+<body>
+    <style>
+        .loading-overlay {
+            display: table;
+            opacity: .7
+        }
+
+        .loading-overlay-content {
+            text-transform: uppercase;
+            letter-spacing: .4em;
+            font-size: 1.15em;
+            font-weight: 700;
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle
+        }
+
+        .loading-overlay.loading-theme-light {
+            background-color: #fff;
+            color: #000
+        }
+
+        .loading-overlay.loading-theme-dark {
+            background-color: #000;
+            color: #fff
+        }
+    </style>
+    <div class="container">
+        <!-- Content here -->
+        <div class="row" style="padding-top:10px">
+            <div class="col-2">
+                <h1>投票系統</h1>
+            </div>
+            <div class="col-2">
+                <form class="pt-2">
+                    <select class="form-control" id="seletFilter">
+                        <option value="0">所有列表</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="col-sm" style="padding-top:5px">
+
+                <button type="button" class="btn btn-primary m-1 float-right" id="signInBtn" data-toggle="modal" data-target="#signinModal">登入</button>
+                <button type="button" class="btn btn-primary m-1 float-right" id="signOutBtn" style="display:none">登出</button>
+                <button type="button" class="btn btn-success m-1 float-right" id="newVoteBtn" data-toggle="modal" data-target="#newQuestionModal"
+                    style="display:none">新增投票</button>
+                <button type="button" class="btn btn-outline-secondary  m-1 float-right" id="editAccount" data-toggle="modal" data-target="#editAccountModal"
+                    style="display:none">帳戶修改</button>
+            </div>
+        </div>
+        <div class="col-5" style="padding-top:10px">
+            <span id="g_userid" class="badge badge-secondary"></span>
+        </div>
+        <hr/>
+
+        <div id="q_list_group" class="list-group mb-5">
+            <div id="q_template" class="q_list list-group-item list-group-item-action flex-column align-items-start" hidden>
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">#
+                        <span class="q_index"></span>&nbsp;
+                        <span class="q_title"></span>
+                    </h5>
+                    <!-- <small class="text-muted">發起人:
+                        <span class="organizer"></span>
+                    </small> -->
+                    <small class="text-muted">截止日期:
+                        <span class="deadlineDate"></span>
+                    </small>
+                </div>
+                <p class="mb-1 q_content"></p>
+                <form class="fakeForm_temp" hidden>
+                    <input type="text" name="account" class="form-control account">
+                    <input type="text" name="contract_address" class="form-control contract_address">
+                    <input type="text" name="props" class="form-control props">
+                </form>
+                <div class="collapse" id="collapseExample">
+                    <canvas class="chart_div" height="100">
+
+                    </canvas>
+                </div>
+                <hr/>
+                <div class="d-flex w-100 justify-content-between">
+                    <button class="btn btn-primary collapseBtn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                        aria-controls="collapseExample" hidden>
+                        查看票數
+                    </button>
+                    <button class="btn btn-info re_btn" hidden>投票</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="voteModal" tabindex="-1" role="dialog" aria-labelledby="voteModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="voteModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="topic">主題</label>
+                            <input type="text" class="form-control" id="topic">
+                        </div>
+                        <div class="form-group">
+                            <label for="deadline">截止日期</label>
+                            <input type="text" class="form-control" id="deadline">
+                        </div>
+
+                        <div class="form-group mt-5 mb-5" id="splitTickets">
+                            <label for="splitTK">票券分配</label>
+                            <table class="table" cellspacing="0" id="st_table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" value="0" id="checkall">
+                                        </th>
+                                        <th>帳戶</th>
+                                        <th>位址</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <!-- <label for="splitTKC" class="mt-2">票數分配</label> -->
+                            <!-- <input type="number" min="1" step="1" class="form-control splitTKCount" id="splitTKCount" value="1"> -->
+                        </div>
+                        <hr>
+                        <div class="form-row">
+                            <div class="col-1">
+                                <label for="options">選項</label>
+                            </div>
+                            <div class="col">
+                                <label for="options" class="hinttext text-danger">* 剩餘票數:
+                                    <span id="hint_num"></span>
+                                </label>
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-sm btn-outline-info float-right" id="add_opts">新增選項</button>
+                            </div>
+                        </div>
+                    </form>
+                    <form id="addOptionsForm" class="mt-1 mb-1">
+                        <div class="form-row">
+                            <div class="col-12 firstTemp mb-2">
+                                <input type="text" class="form-control vote_opts">
+                            </div>
+                        </div>
+                    </form>
+                    <form id="tempOptionsForm" class="mr-5 ml-5 mb-1" hidden>
+                        <div class="form-row">
+                            <div class="col-3">
+                                <input class="form-check-input vote_check" type="checkbox">&nbsp;
+                                <label class="form-check-label vote_check_lable" for="vote_check">
+
+                                </label>
+                            </div>
+                            <div class="col-2">
+                                <input type="number" min="0" step="1" class="form-control vote_count" placeholder="0" disabled>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="newVote_btn">新增</button>
+                    <button type="button" class="btn btn-primary" id="votes_btn">確認</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">登入</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="r_form">
+                        <!-- <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" name="host" class="form-control host" id="signin_host" placeholder="127.0.0.1">
+                        </div> -->
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label for="account">帳號</label>
+                                <input type="email" name="account" class="form-control" id="signin_user" placeholder="Account">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="passwd">密碼</label>
+                                <input type="password" name="passwd" class="form-control" id="signin_psw" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-primary" id="r_btn">登入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="editAccountModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">修改</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="e_form">
+                            <!-- <div class="form-group">
+                                <label for="host">Host</label>
+                                <input type="text" name="host" class="form-control host" id="signin_host" placeholder="127.0.0.1">
+                            </div> -->
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="account">帳號</label>
+                                    <input type="email" name="account" class="form-control" id="e_signin_user" placeholder="Account" disabled>
+                                </div>
+                                <div class="form-group col-md-6">
+                                        <label for="o_passwd">原密碼</label>
+                                        <input type="password" name="o_passwd" class="form-control" id="e_signin_o_psw" placeholder="Password">
+                                    </div>
+                                <div class="form-group col-md-6">
+                                    <label for="passwd">新密碼</label>
+                                    <input type="password" name="passwd" class="form-control" id="e_signin_psw" placeholder="Password">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                        <button type="button" class="btn btn-primary" id="ed_btn">修改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
