@@ -33,3 +33,17 @@ $ mv CheckContract.class /opt/tomcat/apache-tomcat-7.0.72/webapps/ROOT/WEB-INF/c
 $ sudo /opt/tomcat/apache-tomcat-7.0.72/bin/shutdown.sh
 $ sudo /opt/tomcat/apache-tomcat-7.0.72/bin/startup.sh
 ```
+
+## Docker
+```
+# 啟動 Docker
+
+$ sed -i 's/localhost/REAL_IP/g' index.js
+$ ipfs daemon &
+$ sudo /opt/tomcat/bin/startup.sh
+
+第1台：
+	$ echo '{ "Data": "Vote" }' | ipfs object put
+	$ ipfs pin add QmWvMxzFoKjUh4nF9Knf5XSYguVgzArzVZcsNXUJComLvD
+	$ python3 Application/deploy...
+```
