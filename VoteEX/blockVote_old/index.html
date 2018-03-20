@@ -68,7 +68,7 @@
                 <button type="button" class="btn btn-success m-1 float-right" id="newVoteBtn" data-toggle="modal" data-target="#newQuestionModal"
                     style="display:none">新增投票</button>
                 <button type="button" class="btn btn-outline-secondary  m-1 float-right" id="editAccount" data-toggle="modal" data-target="#editAccountModal"
-                    style="display:none">帳戶修改</button>
+                    style="display:none" disabled>帳戶修改</button>
             </div>
         </div>
         <div class="col-5" style="padding-top:10px">
@@ -83,9 +83,9 @@
                         <span class="q_index"></span>&nbsp;
                         <span class="q_title"></span>
                     </h5>
-                    <!-- <small class="text-muted">發起人:
+                    <small class="text-muted">發起人:
                         <span class="organizer"></span>
-                    </small> -->
+                    </small>
                     <small class="text-muted">截止日期:
                         <span class="deadlineDate"></span>
                     </small>
@@ -94,19 +94,13 @@
                 <form class="fakeForm_temp" hidden>
                     <input type="text" name="account" class="form-control account">
                     <input type="text" name="contract_address" class="form-control contract_address">
-                    <input type="text" name="props" class="form-control props">
                 </form>
-                <div class="collapse" id="collapseExample">
-                    <canvas class="chart_div" height="100">
+                <canvas class="chart_div" height="80">
 
-                    </canvas>
-                </div>
+                </canvas>
                 <hr/>
                 <div class="d-flex w-100 justify-content-between">
-                    <button class="btn btn-primary collapseBtn" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
-                        aria-controls="collapseExample" hidden>
-                        查看票數
-                    </button>
+                    <small class="text-muted q_address"></small>
                     <button class="btn btn-info re_btn" hidden>投票</button>
                 </div>
             </div>
@@ -147,8 +141,8 @@
                                     </tr>
                                 </thead>
                             </table>
-                            <!-- <label for="splitTKC" class="mt-2">票數分配</label> -->
-                            <!-- <input type="number" min="1" step="1" class="form-control splitTKCount" id="splitTKCount" value="1"> -->
+                            <label for="splitTKC" class="mt-2">票數分配</label>
+                            <input type="number" min="1" step="1" class="form-control splitTKCount" id="splitTKCount" value="1">
                         </div>
                         <hr>
                         <div class="form-row">
@@ -206,14 +200,14 @@
                 </div>
                 <div class="modal-body">
                     <form id="r_form">
-                        <!-- <div class="form-group">
+                        <div class="form-group">
                             <label for="host">Host</label>
                             <input type="text" name="host" class="form-control host" id="signin_host" placeholder="127.0.0.1">
-                        </div> -->
+                        </div>
                         <div class="form-row">
 
                             <div class="form-group col-md-6">
-                                <label for="account">帳號</label>
+                                <label for="account">帳戶 (User Name/Hash Address)</label>
                                 <input type="email" name="account" class="form-control" id="signin_user" placeholder="Account">
                             </div>
                             <div class="form-group col-md-6">
@@ -230,45 +224,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="editAccountModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">修改</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="e_form">
-                            <!-- <div class="form-group">
-                                <label for="host">Host</label>
-                                <input type="text" name="host" class="form-control host" id="signin_host" placeholder="127.0.0.1">
-                            </div> -->
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label for="account">帳號</label>
-                                    <input type="email" name="account" class="form-control" id="e_signin_user" placeholder="Account" disabled>
-                                </div>
-                                <div class="form-group col-md-6">
-                                        <label for="o_passwd">原密碼</label>
-                                        <input type="password" name="o_passwd" class="form-control" id="e_signin_o_psw" placeholder="Password">
-                                    </div>
-                                <div class="form-group col-md-6">
-                                    <label for="passwd">新密碼</label>
-                                    <input type="password" name="passwd" class="form-control" id="e_signin_psw" placeholder="Password">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
-                        <button type="button" class="btn btn-primary" id="ed_btn">修改</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
