@@ -52,7 +52,7 @@ public class GetQuestion extends HttpServlet {
 	public static JSONObject contract_deploy(String host,String passwd, String contract_address, String behavior) throws IOException {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.redirectErrorStream(true);
-                pb.command("python3", "/home/yenkuanlee/TEST/contract/e.py",host,passwd,contract_address,behavior);
+                pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/AnswerGame/e.py",host,passwd,contract_address,behavior);
                 Process process = pb.start();
                 java.io.InputStream inputStream = process.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

@@ -2,7 +2,7 @@ var block_host = ''
 var address_list = []
 
 $(document).ready(function () {
-    fetch('http://140.92.143.212:8888/GetQuestion', {
+    fetch('http://localhost:8080/GetQuestion', {
             method: 'GET'
         })
         .then(function (res) {
@@ -84,7 +84,7 @@ function makeList(data) {
 }
 
 function addQuestion(ser) {
-    fetch('http://140.92.143.212:8888/ContractDeploy?' + ser, {
+    fetch('http://localhost:8080/ContractDeploy?' + ser, {
             method: 'GET'
         })
         .then(function (res) {
@@ -98,7 +98,7 @@ function addQuestion(ser) {
 }
 
 function ansQuestion(ser) {
-    fetch('http://140.92.143.212:8888/AnswerQuestion?' + ser, {
+    fetch('http://localhost:8080/AnswerQuestion?' + ser, {
             method: 'GET'
         })
         .then(function (res) {
@@ -112,7 +112,7 @@ function ansQuestion(ser) {
 }
 
 function checkList(ser) {
-    fetch('http://140.92.143.212:8888/CheckContract?' + ser + '&behavior=checkList', {
+    fetch('http://localhost:8080/CheckContract?' + ser + '&behavior=checkList', {
             method: 'GET'
         })
         .then(function (res) {
@@ -127,7 +127,7 @@ function checkList(ser) {
 }
 
 function checkAnswer(ser) {
-    fetch('http://140.92.143.212:8888/CheckContract?' + ser + '&behavior=checkAnswer', {
+    fetch('http://localhost:8080/CheckContract?' + ser + '&behavior=checkAnswer', {
             method: 'GET'
         })
         .then(function (res) {

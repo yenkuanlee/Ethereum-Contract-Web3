@@ -16,7 +16,7 @@ public class ContractDeploy extends HttpServlet {
 	public static JSONObject contract_deploy(String host,String account,String passwd,String question, String answer, String duration) throws IOException {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.redirectErrorStream(true);
-                pb.command("python3", "/home/yenkuanlee/TEST/contract/q.py",host,account,passwd,question,answer,duration);
+                pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/AnswerGame/q.py",host,account,passwd,question,answer,duration);
                 Process process = pb.start();
                 java.io.InputStream inputStream = process.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
