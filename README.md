@@ -38,7 +38,7 @@ $ sudo /opt/tomcat/apache-tomcat-7.0.72/bin/startup.sh
 ```
 # 啟動 Docker
 
-$ sed -i 's/localhost/REAL_IP/g' index.js
+$ sed -i 's/localhost/REAL_IP/g' /opt/tomcat/webapp/blockVote/index.js
 $ ipfs daemon &
 $ sudo /opt/tomcat/bin/startup.sh
 
