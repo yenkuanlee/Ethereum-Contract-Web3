@@ -17,9 +17,9 @@ public class VoteRight extends HttpServlet {
                 ProcessBuilder pb = new ProcessBuilder();
                 pb.redirectErrorStream(true);
 		if(voter.equals("AllUser"))
-                	pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/VoteEX/GiveRightToVoters.py",host,account,passwd,contract_address,voter);
+                	pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/VoteEX/GiveRightToVoters.py",host,account,passwd,contract_address);
 		else
-			pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/VoteEX/GiveRightToVoters.py",host,account,passwd,contract_address);
+			pb.command("python3", "/home/localadmin/Ethereum-Contract-Web3/VoteEX/GiveRightToVoters.py",host,account,passwd,contract_address,voter);
                 Process process = pb.start();
                 java.io.InputStream inputStream = process.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
