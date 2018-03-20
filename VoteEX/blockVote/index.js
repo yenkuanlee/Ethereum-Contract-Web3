@@ -173,7 +173,7 @@ $(document).ready(function () {
     $('#signOutBtn').on('click', e => {
         sessionStorage.clear();
         flag = 1
-        location.reload();
+        location.reload(true);
     })
 
     $('#deadline').datepicker({
@@ -332,7 +332,7 @@ $(document).ready(function () {
                     alert('修改成功，請重新登入')
                     sessionStorage.clear();
                     flag = 1
-                    location.reload();
+                    location.reload(true);
                 }).catch(function (err) {
                     console.log(err)
                 })
@@ -423,7 +423,7 @@ function setVoteRight(add) {
         }).then(function (res) {
             console.log(res)
             $('#voteModal').modal('hide')
-            location.reload();
+            location.reload(true);
         }).catch(function (err) {
             console.log(err)
         })
@@ -445,7 +445,7 @@ function setVoteRight(add) {
         Promise.all(pary).then(res => {
             console.log(res)
             $('#voteModal').modal('hide')
-            // location.reload();
+            location.reload(true);
         }).catch(fail => {
             console.log(fail)
         })
