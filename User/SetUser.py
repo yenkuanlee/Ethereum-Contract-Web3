@@ -28,6 +28,6 @@ contract_instance = w3.eth.contract(abi, contract_address, ContractFactoryClass=
 
 # name, ehash, host, passwd, tag, role
 #contract_instance.setNode('name','ehash','host','passwd','tag','role', transact={'from': account})
-load = c.execute("select * from user;")
+load = c.execute("select * from user where Upasswd != 'null';")
 for x in load:
     contract_instance.setNode(x[2],x[0],x[1],x[3],x[4],x[5], transact={'from': account})
