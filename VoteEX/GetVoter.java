@@ -25,7 +25,7 @@ public class GetVoter extends HttpServlet {
     public JSONArray selectAll()throws SQLException{
 	    JSONArray result = new JSONArray();
 	    try{
-	    String SelectSQL = "select * from User;";
+	    String SelectSQL = "select * from User where Upasswd != 'null';";
 	    Class.forName("org.sqlite.JDBC");
 	    connection = DriverManager.getConnection("jdbc:sqlite:/tmp/vote.db");
 	    Statement statement = null;
