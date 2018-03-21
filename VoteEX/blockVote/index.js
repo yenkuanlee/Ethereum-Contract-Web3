@@ -155,10 +155,13 @@ v_list.length = 0
 
 var flag = 1 //是否登入之標的
 
+// var ip = 'http://140.92.143.82:8080'
+var ip = '..'
+
 $(document).ready(function () {
     getVoteAPI()
 
-    fetch('http://140.92.143.82:8080/GetVoter', {
+    fetch(ip+'/GetVoter', {
         method: 'GET'
     }).then(function (res) {
         return res.json()
@@ -195,7 +198,7 @@ $(document).ready(function () {
             if (count > 0) {
                 // console.log('http://140.92.143.82:8888/Vote?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + ca + '&to_Voter=' + voter + '&cnt=' + count)
                 return new Promise((rev, rej) => {
-                    fetch('http://140.92.143.82:8080/Vote?host=' +
+                    fetch(ip+'/Vote?host=' +
                         sessionStorage.getItem('userHost') + '&account=' +
                         sessionStorage.getItem('user') + '&passwd=' +
                         // sessionStorage.getItem('psw') + '&contract_address=' +
@@ -284,7 +287,7 @@ $(document).ready(function () {
         let user = $('#signin_user').val()
         let psw = $('#signin_psw').val()
 
-        fetch('http://140.92.143.82:8080/GetUserInfo?Uname=' + user + '&Upasswd=' + psw, {
+        fetch(ip+'/GetUserInfo?Uname=' + user + '&Upasswd=' + psw, {
             method: 'GET'
         }).then(function (res) {
             return res.json()
@@ -322,7 +325,7 @@ $(document).ready(function () {
 
         if (opsw === sessionStorage.getItem('psw')) {
             flag = 0
-            fetch('http://140.92.143.82:8080/ModifyPasswd?Uname=' + user + '&op=' + opsw + '&np=' + npsw, {
+            fetch(ip+'/ModifyPasswd?Uname=' + user + '&op=' + opsw + '&np=' + npsw, {
                     method: 'GET'
                 })
                 .then(function (res) {
@@ -362,7 +365,7 @@ $(document).ready(function () {
         $('#voteModal').modal('hide')
         $('body').loading()
         // console.log(encodeURI('http://140.92.143.82:8888/VoteContractDeploy?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&topic=' + topic + '&Pnum=' + prop.length + '&prop=' + prop.join(',,,') + '&deadline=' + deadline))
-        fetch(encodeURI('http://140.92.143.82:8080/VoteContractDeploy?host=' +
+        fetch(encodeURI(ip+'/VoteContractDeploy?host=' +
             sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') +
             '&passwd=' + '123' + '&topic=' + topic + '&Pnum=' + prop.length +
             '&prop=' + prop.join(',,,') + '&deadline=' + deadline), {
@@ -393,7 +396,7 @@ $(document).ready(function () {
 })
 
 function getVoteAPI() {
-    fetch('http://140.92.143.82:8080/GetAppInfo?app=Vote', {
+    fetch(ip+'/GetAppInfo?app=Vote', {
             method: 'GET'
         })
         .then(function (res) {
@@ -416,7 +419,7 @@ function buildPari(ary) {
 function setVoteRight(add) {
     console.log(add)
     if ($('#checkall').is(':checked')) {
-        fetch(encodeURI('http://140.92.143.82:8080/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + '123' + '&contract_address=' + add + '&voter=AllUser'), {
+        fetch(encodeURI(ip+'/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + '123' + '&contract_address=' + add + '&voter=AllUser'), {
             method: 'GET'
         }).then(function (res) {
             return res.json()
@@ -430,7 +433,7 @@ function setVoteRight(add) {
     } else {
         var pary = voteRightAry.map(elm => {
             return new Promise((rev, rej) => {
-                fetch(encodeURI('http://140.92.143.82:8080/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + '123' + '&contract_address=' + add + '&voter=' + elm), {
+                fetch(encodeURI(ip+'/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + '123' + '&contract_address=' + add + '&voter=' + elm), {
                     method: 'GET'
                 }).then(function (res) {
                     return res.json()
@@ -628,7 +631,7 @@ function dosignin(data) {
         let ca = $(elm).find('.contract_address').val()
         // console.log('http://140.92.143.82:8888/CheckVoteContract?host='+data.host+'&contract_address='+ca+'&behavior=GetRemainVoteWeight&arg='+data.user)
         return new Promise((rev, rej) => {
-            fetch('http://140.92.143.82:8080/CheckVoteContract?host=' + data.host + '&contract_address=' + ca + '&behavior=GetRemainVoteWeight&arg=' + data.user, {
+            fetch(ip+'/CheckVoteContract?host=' + data.host + '&contract_address=' + ca + '&behavior=GetRemainVoteWeight&arg=' + data.user, {
                 method: 'GET'
             }).then(function (res) {
                 return res.json()
@@ -665,7 +668,7 @@ function dosignin(data) {
 }
 
 function tickNum(elm, $ql) {
-    fetch('http://140.92.143.82:8080/GetTicketNumber?host=' + sessionStorage.getItem('userHost') + '&contract_address=' + elm.contract_address + '&prop=' + elm.prop, {
+    fetch(ip+'/GetTicketNumber?host=' + sessionStorage.getItem('userHost') + '&contract_address=' + elm.contract_address + '&prop=' + elm.prop, {
             method: 'GET'
         })
         .then(function (res) {
