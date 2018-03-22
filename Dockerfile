@@ -87,5 +87,4 @@ mv /home/localadmin/go-ipfs/ipfs /usr/local/bin/ipfs
 # launch IPFS
 USER localadmin
 RUN ipfs init && \
-sed -i 's/8080/8081/g' /home/localadmin/.ipfs/config && \
-echo "ipfs daemon &" >> /home/localadmin/.bashrc
+sed -i 's/8080/8081/g' /home/localadmin/.ipfs/config
