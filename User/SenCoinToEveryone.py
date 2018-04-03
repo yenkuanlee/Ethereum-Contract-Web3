@@ -1,15 +1,10 @@
 from web3 import Web3, HTTPProvider
-f = open('host','r')
-fw = open("AllUser.txt","w")
+web3 = Web3(HTTPProvider('http://150.117.122.81:8545'))
+god = "0x3b48ba756fb58492ea9cfca48df123fc09bee72b"
+f = open("AllUser.txt","r")
 while True:
     line = f.readline()
-    host = line.replace("\n","")
-    web3 = Web3(HTTPProvider('http://'+host+':8545'))
-    god = web3.eth.coinbase
+    user = line.split("\t")[1].split("\n")[0]
     web3.personal.unlockAccount(god, '123')
-    for i in range(30):
-        Ehash = web3.personal.newAccount("123")
-        web3.eth.sendTransaction({"to": Ehash, "from": god,"value":web3.toWei("1000", "ether")})
-        fw.write(host+"\t"+Ehash+"\n")
+    web3.eth.sendTransaction({"to": user, "from": god,"value":web3.toWei("10000", "ether")})
 f.close()
-fw.close()
