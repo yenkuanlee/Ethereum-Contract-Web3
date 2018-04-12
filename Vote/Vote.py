@@ -15,7 +15,7 @@ contract_address = '0xeBd3ab40f732cCCb89aA94e04f1649FdEBe092Ee'
 #contract_address = sys.argv[4]
 
 # web3.py instance
-w3 = Web3(HTTPProvider('http://'+host+':8545'))
+w3 = Web3(HTTPProvider('http://'+host+':3000'))
 w3.personal.unlockAccount(account,passwd)
 f = open('abi','r')
 abi = f.readline()

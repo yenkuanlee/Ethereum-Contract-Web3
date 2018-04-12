@@ -4,7 +4,7 @@ fw = open("AllUser.txt","w")
 while True:
     line = f.readline()
     host = line.replace("\n","")
-    web3 = Web3(HTTPProvider('http://'+host+':8545'))
+    web3 = Web3(HTTPProvider('http://'+host+':3000'))
     god = web3.eth.coinbase
     web3.personal.unlockAccount(god, '123')
     for i in range(30):

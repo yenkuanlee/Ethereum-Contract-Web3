@@ -6,7 +6,7 @@ from solc import compile_source
 from web3.contract import ConciseContract
 
 host = '150.117.122.84'
-account = '0xe55879e12514f2255e6f4fd36bd459f0807de3b2'
+account = '0x3b48ba756fb58492ea9cfca48df123fc09bee72b'
 passwd = '123'
 
 f = open('app.sol','r')
@@ -22,7 +22,7 @@ compiled_sol = compile_source(contract_source_code) # Compiled source code
 contract_interface = compiled_sol['<stdin>:App']
 
 # web3.py instance
-w3 = Web3(HTTPProvider('http://'+host+':8545'))
+w3 = Web3(HTTPProvider('http://'+host+':3000'))
 w3.personal.unlockAccount(account, passwd)
 # Instantiate and deploy contract
 contractt = w3.eth.contract(abi=contract_interface['abi'], bytecode=contract_interface['bin'])

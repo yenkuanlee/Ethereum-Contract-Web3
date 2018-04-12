@@ -12,7 +12,7 @@ contract_address = sys.argv[2]
 behavior = sys.argv[3]
 
 # web3.py instance
-w3 = Web3(HTTPProvider('http://'+host+':8545'))
+w3 = Web3(HTTPProvider('http://'+host+':3000'))
 f = open(Cpath+'/abi','r')
 abi = f.readline()
 f.close()

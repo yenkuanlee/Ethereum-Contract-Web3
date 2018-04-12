@@ -65,7 +65,7 @@ f.write(json.dumps((contract_interface['abi'])))
 f.close()
 
 # web3.py instance
-w3 = Web3(HTTPProvider('http://'+host+':8545'))
+w3 = Web3(HTTPProvider('http://'+host+':3000'))
 w3.personal.unlockAccount(account, passwd)
 # Instantiate and deploy contract
 contractt = w3.eth.contract(abi=contract_interface['abi'], bytecode=contract_interface['bin'])

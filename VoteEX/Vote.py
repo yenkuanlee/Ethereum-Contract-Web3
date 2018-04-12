@@ -19,7 +19,7 @@ to_Voter = sys.argv[5]
 cnt = sys.argv[6]
 
 # web3.py instance
-w3 = Web3(HTTPProvider('http://'+host+':8545'))
+w3 = Web3(HTTPProvider('http://'+host+':3000'))
 w3.personal.unlockAccount(account,passwd)
 f = open(Cpath+'/abi','r')
 abi = f.readline()

@@ -16,7 +16,7 @@ contract_address = '0xeBd3ab40f732cCCb89aA94e04f1649FdEBe092Ee'
 #voter = '0xf6f5d7024cfc89232afa6453ec70d9df92f7825c'
 
 # web3.py instance
-w3 = Web3(HTTPProvider('http://'+host+':8545'))
+w3 = Web3(HTTPProvider('http://'+host+':3000'))
 w3.personal.unlockAccount(account,passwd)
 
 f = open('abi','r')

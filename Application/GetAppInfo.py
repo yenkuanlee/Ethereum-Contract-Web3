@@ -24,11 +24,11 @@ IndexDict[deadlinePeer] = "deadline"
 Cpath = os.path.dirname(os.path.realpath(__file__))
 
 host = '150.117.122.84'
-account = '0xe55879e12514f2255e6f4fd36bd459f0807de3b2'
+account = '0x3b48ba756fb58492ea9cfca48df123fc09bee72b'
 passwd = '123'
 
 # web3.py instance
-w3 = Web3(HTTPProvider('http://'+host+':8545'))
+w3 = Web3(HTTPProvider('http://'+host+':3000'))
 w3.personal.unlockAccount(account,passwd)
 f = open(Cpath+'/app.json','r')
 line = f.readline()

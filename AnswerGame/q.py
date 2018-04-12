@@ -77,7 +77,7 @@ compiled_sol = compile_source(contract_source_code) # Compiled source code
 contract_interface = compiled_sol['<stdin>:answerGame']
 
 # web3.py instance
-w3 = Web3(HTTPProvider('http://'+host+':8545'))
+w3 = Web3(HTTPProvider('http://'+host+':3000'))
 w3.personal.unlockAccount(account, passwd)
 # Instantiate and deploy contract
 contractt = w3.eth.contract(abi=contract_interface['abi'], bytecode=contract_interface['bin'])
