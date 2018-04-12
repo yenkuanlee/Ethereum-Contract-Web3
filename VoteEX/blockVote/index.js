@@ -155,8 +155,8 @@ v_list.length = 0
 
 var flag = 1 //是否登入之標的
 
-// var ip = 'http://140.92.143.82:8080'
-var ip = '..'
+var ip = 'http://140.92.143.82:8080'
+// var ip = '..'
 
 $(document).ready(function () {
     getVoteAPI()
@@ -331,7 +331,6 @@ $(document).ready(function () {
                 .then(function (res) {
                     return res.json()
                 }).then(function (res) {
-                    console.log(res)
                     alert('修改成功，請重新登入')
                     sessionStorage.clear();
                     flag = 1
@@ -417,7 +416,6 @@ function buildPari(ary) {
 }
 
 function setVoteRight(add) {
-    console.log(add)
     if ($('#checkall').is(':checked')) {
         fetch(encodeURI(ip+'/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + '123' + '&contract_address=' + add + '&voter=AllUser'), {
             method: 'GET'
@@ -554,6 +552,10 @@ function makeList(data, avalible) {
 
         $('#q_list_group').append(ql)
 
+        // $(ql).find('.collapseBtn').removeAttr('hidden')
+        $(ql).find('.collapseBtn').on('click', e => {
+            tickNum(elm, $(ql))
+        })
 
         if (avalible) {
             let d1 = new Date(elm.deadline)
@@ -565,9 +567,7 @@ function makeList(data, avalible) {
 
                 $(ql).find('.re_btn').on('click', e => {
                     const data = $(e.target).data('data')
-                    console.log(data)
                     let cas = $(ql).find('.fakeForm').find('.contract_address').val() //contract address
-                    console.log(data.cas)
                     showReplyModal({
                         cas,
                         ...data
@@ -575,10 +575,6 @@ function makeList(data, avalible) {
                 })
                 $('#contract_address_t').append('<option value="' + elm.contract_address + '">' + 'Q' + (idx + 1) + '_ ' + elm.contract_address + '</option>')
 
-                $(ql).find('.collapseBtn').removeAttr('hidden')
-                $(ql).find('.collapseBtn').on('click', e => {
-                    tickNum(elm, $(ql))
-                })
             }
         }
     });
@@ -668,14 +664,18 @@ function dosignin(data) {
 }
 
 function tickNum(elm, $ql) {
-    fetch(ip+'/GetTicketNumber?host=' + sessionStorage.getItem('userHost') + '&contract_address=' + elm.contract_address + '&prop=' + elm.prop, {
+    fetch(ip+'/GetTicketNumber?host=' 
+            // + sessionStorage.getItem('userHost') 
+            + '150.117.122.84'
+            + '&contract_address=' 
+            + elm.contract_address 
+            // + '0x3b48ba756fb58492ea9cfca48df123fc09bee72b'
+            + '&prop=' + elm.prop, {
             method: 'GET'
         })
         .then(function (res) {
             return res.json()
         }).then(function (res) {
-            console.log(res)
-
             let ctx = $($ql).find('.chart_div')
             let elmJson = JSON.parse(res.output)
             let lb = []

@@ -145,6 +145,7 @@ var address_list = [],
     ]
 var userAry = []
 userAry.length = 0
+var userPair = new Object
 
 var voteRightAry = []
 voteRightAry.length = 0
@@ -152,18 +153,21 @@ voteRightAry.length = 0
 var v_list = []
 v_list.length = 0
 
-var flag = 1
+var flag = 1 //是否登入之標的
+
+// var ip = 'http://140.92.143.82:8080'
+var ip = '..'
 
 $(document).ready(function () {
     getVoteAPI()
 
-    fetch('http://localhost:8080/GetVoter', {
+    fetch(ip+'/GetVoter', {
         method: 'GET'
     }).then(function (res) {
         return res.json()
     }).then(function (res) {
-        console.log(res)
         userAry = res.voters_list
+        buildPari(userAry)
         genTable(userAry)
     }).catch(function (err) {
         console.log(err)
@@ -171,12 +175,13 @@ $(document).ready(function () {
 
     $('#signOutBtn').on('click', e => {
         sessionStorage.clear();
-        console.log(sessionStorage)
         flag = 1
-        location.reload();
+        location.reload(true);
     })
 
-    $('#deadline').datepicker();
+    $('#deadline').datepicker({
+        dateFormat: 'yymmdd'
+    });
 
     // $('.host').val(block_host)
 
@@ -185,17 +190,22 @@ $(document).ready(function () {
     // })
 
     $('#votes_btn').on('click', function (e) {
+        $('body').loading()
         let ca = $('#votes_btn').data('ca')
         let reqAry = $('.e_vote_count').map((idx, elm) => {
             let voter = $(elm).attr('id').split('_')[1]
             let count = $(elm).val()
-            console.log(count)
             if (count > 0) {
-                // console.log('http://localhost:8080/Vote?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + ca + '&to_Voter=' + voter + '&cnt=' + count)
+                // console.log('http://140.92.143.82:8888/Vote?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + ca + '&to_Voter=' + voter + '&cnt=' + count)
                 return new Promise((rev, rej) => {
-                    fetch('http://localhost:8080/Vote?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + ca + '&to_Voter=' + voter + '&cnt=' + count, {
-                        method: 'GET'
-                    }).then(function (res) {
+                    fetch(ip+'/Vote?host=' +
+                        sessionStorage.getItem('userHost') + '&account=' +
+                        sessionStorage.getItem('user') + '&passwd=' +
+                        // sessionStorage.getItem('psw') + '&contract_address=' +
+                        '123' + '&contract_address=' +
+                        ca + '&to_Voter=' + voter + '&cnt=' + count, {
+                            method: 'GET'
+                        }).then(function (res) {
                         return res.json()
                     }).then(function (res) {
                         rev(res)
@@ -207,16 +217,18 @@ $(document).ready(function () {
         })
 
         Promise.all(reqAry).then(res => {
-            makeList(v_list)
-            dosignin({
-                host: sessionStorage.getItem('userHost'),
-                user: sessionStorage.getItem('user'),
-                psw: sessionStorage.getItem('psw')
-            })
+            // makeList(v_list)
+            // dosignin({
+            //     host: sessionStorage.getItem('userHost'),
+            //     user: sessionStorage.getItem('user'),
+            //     psw: sessionStorage.getItem('psw')
+            // })
             $('#voteModal').modal('hide')
-            location.reload();
-
+            setTimeout(function () {
+                location.reload(true);
+            }, 3000)
         }).catch(fail => {
+            $('body').loading('toggle')
             console.log(fail)
         })
     })
@@ -271,20 +283,64 @@ $(document).ready(function () {
     // })
 
     $('#r_btn').on('click', e => {
-        let host = $('#signin_host').val()
+        // let host = $('#signin_host').val()
         let user = $('#signin_user').val()
         let psw = $('#signin_psw').val()
 
-        let un = userAry.filter(elm => elm.Uname === user)
-        let wl = userAry.filter(elm => elm.Uhash === user)
+        fetch(ip+'/GetUserInfo?Uname=' + user + '&Upasswd=' + psw, {
+            method: 'GET'
+        }).then(function (res) {
+            return res.json()
+        }).then(function (res) {
+            ary = JSON.parse(res.output)
+            if (ary[0] !== '' && ary[1] !== '') {
+                flag = 0
+                dosignin({
+                    host: ary[1],
+                    user: ary[0],
+                    uname: user,
+                    psw
+                })
+            }else{
+                alert('帳號密碼錯誤，請重新輸入')
+            }
 
-        if (un.length > 0 || wl.length > 0) {
+        }).catch(function (err) {
+            console.log(err)
+            alert('帳號密碼錯誤，請重新輸入')
+        })
+    })
+
+    $('#editAccountModal').on('shown.bs.modal', e => {
+        if (flag == 0) {
+
+            $('#e_signin_user').val(sessionStorage.getItem('uname'))
+        }
+    })
+    $('#ed_btn').on('click', e => {
+        // let host = $('#signin_host').val()
+        let user = $('#e_signin_user').val()
+        let opsw = $('#e_signin_o_psw').val()
+        let npsw = $('#e_signin_psw').val()
+
+        if (opsw === sessionStorage.getItem('psw')) {
             flag = 0
-            dosignin({
-                host,
-                user,
-                psw
-            })
+            fetch(ip+'/ModifyPasswd?Uname=' + user + '&op=' + opsw + '&np=' + npsw, {
+                    method: 'GET'
+                })
+                .then(function (res) {
+                    return res.json()
+                }).then(function (res) {
+                    console.log(res)
+                    alert('修改成功，請重新登入')
+                    sessionStorage.clear();
+                    flag = 1
+                    location.reload(true);
+                }).catch(function (err) {
+                    console.log(err)
+                })
+        } else {
+            alert('帳號密碼錯誤，請重新輸入')
         }
     })
 
@@ -297,7 +353,7 @@ $(document).ready(function () {
     $('#newVote_btn').unbind().bind('click', e => {
         let topic = $('#topic').val()
         let deadline = $('#deadline').val()
-        let Pnum = $('#splitTKCount').val()
+        // let Pnum = $('#splitTKCount').val()
 
         let prop = []
         prop.length = 0
@@ -308,7 +364,11 @@ $(document).ready(function () {
         })
         $('#voteModal').modal('hide')
         $('body').loading()
-        fetch(encodeURI('http://localhost:8080/VoteContractDeploy?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&topic=' + topic + '&Pnum=' + Pnum + '&prop=' + prop.join(',,,') + '&deadline=' + deadline), {
+        // console.log(encodeURI('http://140.92.143.82:8888/VoteContractDeploy?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&topic=' + topic + '&Pnum=' + prop.length + '&prop=' + prop.join(',,,') + '&deadline=' + deadline))
+        fetch(encodeURI(ip+'/VoteContractDeploy?host=' +
+            sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') +
+            '&passwd=' + '123' + '&topic=' + topic + '&Pnum=' + prop.length +
+            '&prop=' + prop.join(',,,') + '&deadline=' + deadline), {
             method: 'GET'
         }).then(function (res) {
             return res.json()
@@ -323,46 +383,57 @@ $(document).ready(function () {
     $('#seletFilter').on('change', e => {
         if ($(e.target).val() == '0') {
             getVoteAPI()
+            $('.noData').remove()
         } else {
             dosignin({
                 host: sessionStorage.getItem('userHost'),
                 user: sessionStorage.getItem('user'),
-                psw: sessionStorage.getItem('psw')
+                psw: sessionStorage.getItem('psw'),
+                uname: sessionStorage.getItem('uname')
             })
         }
     })
 })
 
 function getVoteAPI() {
-    fetch('http://localhost:8080/GetVote', {
+    fetch(ip+'/GetAppInfo?app=Vote', {
             method: 'GET'
         })
         .then(function (res) {
             return res.json()
         }).then(function (res) {
-            console.log(res)
-            v_list = res.vote_list
-            makeList(res.vote_list)
+            v_list = JSON.parse(res.output)
+            makeList(v_list)
         }).catch(function (err) {
             console.log(err)
         })
 }
 
+function buildPari(ary) {
+    for (var i = 0; i < ary.length; i++) {
+        uName = ary[i].Uname
+        userPair[uName] = ary[i]
+    }
+}
+
 function setVoteRight(add) {
+    console.log(add)
     if ($('#checkall').is(':checked')) {
-        fetch(encodeURI('http://localhost:8080/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + add + '&voter=AllUser'), {
+        fetch(encodeURI(ip+'/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + '123' + '&contract_address=' + add + '&voter=AllUser'), {
             method: 'GET'
         }).then(function (res) {
             return res.json()
         }).then(function (res) {
             console.log(res)
+            $('#voteModal').modal('hide')
+            location.reload(true);
         }).catch(function (err) {
             console.log(err)
         })
     } else {
         var pary = voteRightAry.map(elm => {
             return new Promise((rev, rej) => {
-                fetch(encodeURI('http://localhost:8080/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + sessionStorage.getItem('psw') + '&contract_address=' + add + '&voter=' + elm), {
+                fetch(encodeURI(ip+'/VoteRight?host=' + sessionStorage.getItem('userHost') + '&account=' + sessionStorage.getItem('user') + '&passwd=' + '123' + '&contract_address=' + add + '&voter=' + elm), {
                     method: 'GET'
                 }).then(function (res) {
                     return res.json()
@@ -377,7 +448,7 @@ function setVoteRight(add) {
         Promise.all(pary).then(res => {
             console.log(res)
             $('#voteModal').modal('hide')
-            location.reload();
+            location.reload(true);
         }).catch(fail => {
             console.log(fail)
         })
@@ -465,7 +536,7 @@ function makeList(data, avalible) {
         $(ql).removeAttr('hidden')
         $(ql).attr('id', 'q_' + idx)
         $(ql).find('.q_index').text(idx + 1)
-        $(ql).find('.organizer').text(elm.account)
+        // $(ql).find('.organizer').text(elm.account)
         $(ql).find('.deadlineDate').removeClass('text-danger')
         $(ql).find('.deadlineDate').text(elm.deadline)
         $(ql).find('.q_title').text(elm.topic)
@@ -473,8 +544,14 @@ function makeList(data, avalible) {
 
         $(ql).find('.account').val(elm.account)
         $(ql).find('.contract_address').val(elm.contract_address)
+        $(ql).find('.props').val(elm.prop)
         // $(ql).find('.q_address').text(elm.contract_address)
         $(ql).find('.re_btn').data('data', elm)
+
+        $(ql).find('.collapse').attr('id', 'collapse_' + elm.contract_address)
+        $(ql).find('.collapseBtn').attr('data-target', '#collapse_' + elm.contract_address)
+        $(ql).find('.collapseBtn').attr('aria-controls', '#collapse_' + elm.contract_address)
+
         $('#q_list_group').append(ql)
 
 
@@ -488,55 +565,22 @@ function makeList(data, avalible) {
 
                 $(ql).find('.re_btn').on('click', e => {
                     const data = $(e.target).data('data')
-                    let cas = $(ql).find('.fakeForm').find('.contract_address').val()
+                    console.log(data)
+                    let cas = $(ql).find('.fakeForm').find('.contract_address').val() //contract address
+                    console.log(data.cas)
                     showReplyModal({
                         cas,
                         ...data
                     })
                 })
                 $('#contract_address_t').append('<option value="' + elm.contract_address + '">' + 'Q' + (idx + 1) + '_ ' + elm.contract_address + '</option>')
+
+                $(ql).find('.collapseBtn').removeAttr('hidden')
+                $(ql).find('.collapseBtn').on('click', e => {
+                    tickNum(elm, $(ql))
+                })
             }
-
-
         }
-
-        let ctx = $(ql).find('.chart_div')
-        let elmJson = JSON.parse(elm.prop)
-        let lb = []
-        lb.length = 0
-        let dt = []
-        dt.length = 0
-
-        for (let i in elmJson) {
-            lb.push(i)
-            dt.push(elmJson[i].cnt)
-        }
-
-        let cc = (() => {
-            let dtl = dt.length
-            let csl = colorSet.length
-            let rt = []
-            rt.length = 0
-            if (dtl > csl) {
-                let count = dtl / csl
-                for (var i = 0; i < count; i++) {
-                    rt = rt.concat(colorSet)
-                }
-                return rt
-            } else {
-                return colorSet
-            }
-        })();
-
-        let data = {
-            labels: lb,
-            datasets: [{
-                label: '# ' + idx + ' of Votes',
-                data: dt,
-                backgroundColor: cc,
-            }]
-        }
-        makeChart(ctx, data)
     });
 
     if ($('.listAddClass').length == 0) {
@@ -549,7 +593,8 @@ function makeList(data, avalible) {
         dosignin({
             host: sessionStorage.getItem('userHost'),
             user: sessionStorage.getItem('user'),
-            psw: sessionStorage.getItem('psw')
+            psw: sessionStorage.getItem('psw'),
+            uname: sessionStorage.getItem('uname')
         })
     }
 }
@@ -582,12 +627,11 @@ function makeChart(ctx, data) {
 }
 
 function dosignin(data) {
-
     let pa = $('.fakeForm').map((idx, elm) => {
         let ca = $(elm).find('.contract_address').val()
-        // console.log('http://localhost:8080/CheckVoteContract?host='+data.host+'&contract_address='+ca+'&behavior=GetRemainVoteWeight&arg='+data.user)
+        // console.log('http://140.92.143.82:8888/CheckVoteContract?host='+data.host+'&contract_address='+ca+'&behavior=GetRemainVoteWeight&arg='+data.user)
         return new Promise((rev, rej) => {
-            fetch('http://localhost:8080/CheckVoteContract?host=' + data.host + '&contract_address=' + ca + '&behavior=GetRemainVoteWeight&arg=' + data.user, {
+            fetch(ip+'/CheckVoteContract?host=' + data.host + '&contract_address=' + ca + '&behavior=GetRemainVoteWeight&arg=' + data.user, {
                 method: 'GET'
             }).then(function (res) {
                 return res.json()
@@ -609,6 +653,7 @@ function dosignin(data) {
         $('#seletFilter').append($('<option id="avaliableOPT"></option>').text('可投票列表').val('1'))
         $('#seletFilter').val('1')
         sessionStorage.setItem('user', data.user)
+        sessionStorage.setItem('uname', data.uname)
         sessionStorage.setItem('userHost', data.host)
         sessionStorage.setItem('psw', data.psw)
         $('#signOutBtn').show();
@@ -620,6 +665,58 @@ function dosignin(data) {
     }).catch(fail => {
         console.log(fail)
     })
+}
+
+function tickNum(elm, $ql) {
+    fetch(ip+'/GetTicketNumber?host=' + sessionStorage.getItem('userHost') + '&contract_address=' + elm.contract_address + '&prop=' + elm.prop, {
+            method: 'GET'
+        })
+        .then(function (res) {
+            return res.json()
+        }).then(function (res) {
+            console.log(res)
+
+            let ctx = $($ql).find('.chart_div')
+            let elmJson = JSON.parse(res.output)
+            let lb = []
+            lb.length = 0
+            let dt = []
+            dt.length = 0
+
+            for (let i in elmJson) {
+                lb.push(i)
+                dt.push(elmJson[i])
+            }
+
+            let cc = (() => {
+                let dtl = dt.length
+                let csl = colorSet.length
+                let rt = []
+                rt.length = 0
+
+                if (dtl > csl) {
+                    let count = dtl / csl
+                    for (var i = 0; i < count; i++) {
+                        rt = rt.concat(colorSet)
+                    }
+                    return rt
+                } else {
+                    return colorSet
+                }
+            })();
+
+            let data = {
+                labels: lb,
+                datasets: [{
+                    label: 'Vote ' + elm.topic,
+                    data: dt,
+                    backgroundColor: cc,
+                }]
+            }
+            makeChart(ctx, data)
+        }).catch(function (err) {
+            console.log(err)
+        })
 }
 
 function filterChart(data) {
@@ -635,67 +732,8 @@ function filterChart(data) {
     makeList(cloneAry, true)
 }
 
-function addQuestion(ser) {
-    fetch('http://localhost:8080/ContractDeploy?' + ser, {
-            method: 'GET'
-        })
-        .then(function (res) {
-            return res.json()
-        }).then(function (res) {
-            location.reload()
-            flag = 1
-            console.log(res)
-        }).catch(function (err) {
-            console.log(err)
-        })
-}
-
 function setUserProfile() {
     // $('#g_userid').text('帳戶: ' + sessionStorage.getItem('user'))
-}
-
-function ansQuestion(ser) {
-    fetch('http://localhost:8080/AnswerQuestion?' + ser, {
-            method: 'GET'
-        })
-        .then(function (res) {
-            return res.json()
-        }).then(function (res) {
-            console.log(res)
-            location.reload()
-            flag = 1
-        }).catch(function (err) {
-            console.log(err)
-        })
-}
-
-function checkList(ser) {
-    fetch('http://localhost:8080/CheckContract?' + ser + '&behavior=checkList', {
-            method: 'GET'
-        })
-        .then(function (res) {
-            return res.json()
-        }).then(function (res) {
-            let html = '<span class="badge badge-dark">' + res.output + '</span>'
-            $('#ans_list').append(html)
-        }).catch(function (err) {
-            console.log(err)
-        })
-    $('#r_form').find('#r_answer').removeAttr('disabled')
-}
-
-function checkAnswer(ser) {
-    fetch('http://localhost:8080/CheckContract?' + ser + '&behavior=checkAnswer', {
-            method: 'GET'
-        })
-        .then(function (res) {
-            return res.json()
-        }).then(function (res) {
-            let html = '<span class="badge badge-dark">' + res.output + '</span>'
-            $('#ans_check').html(html)
-        }).catch(function (err) {
-            console.log(err)
-        })
 }
 
 function showReplyModal(data) {
@@ -711,18 +749,17 @@ function showReplyModal(data) {
     $('#topic').val(data.topic).attr('disabled', true)
     $('#deadline').val(data.deadline).attr('disabled', true)
     $('#votes_btn').data('ca', data.contract_address)
-    let opts = JSON.parse(data.prop)
-
+    let opts = data.prop.split(',,,')
     $('#hint_num').text(sessionStorage.getItem('q_' + data.contract_address + '_count'))
-    for (var i in opts) {
+    for (var i = 0; i < opts.length; i++) {
         let os = $('#tempOptionsForm').clone()
         $(os).removeAttr('hidden')
         $(os).addClass('vote_options')
         $(os).attr('id', data.contract_address + '_' + i)
         $(os).find('.vote_check').attr('id', i)
         $(os).find('.vote_check_lable').attr('for', i)
-        $(os).find('.vote_check_lable').text(i)
-        $(os).find('.vote_count').attr('id', 'voter_' + opts[i]['num'])
+        $(os).find('.vote_check_lable').text(opts[i])
+        $(os).find('.vote_count').attr('id', 'voter_' + i)
         $(os).find('.vote_count').addClass('e_vote_count')
         $('#tempOptionsForm').after(os)
 
