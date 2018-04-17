@@ -11,6 +11,7 @@ Cpath = os.path.dirname(os.path.realpath(__file__))
 host = sys.argv[1]
 contract_address = sys.argv[2]
 prop = sys.argv[3]
+prop = prop.replace("_yenkuanlee_"," ")
 Plist = prop.split(",,,")
 Pdict = dict()
 

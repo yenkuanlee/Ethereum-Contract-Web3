@@ -53,6 +53,7 @@ public class VoteContractDeploy extends HttpServlet {
 	String Pnum = request.getParameter("Pnum");
 	//String prop = request.getParameter("prop");
 	String prop = new String(request.getParameter("prop").getBytes("iso-8859-1"), "UTF-8");
+	prop = prop.replace(" ","_yenkuanlee_");
 	String deadline = request.getParameter("deadline");
 	
 
