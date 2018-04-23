@@ -1,6 +1,3 @@
-var block_host = '';
-var address_list = [];
-
 var flag = 1; //是否登入之標的
 var ip = "http://140.92.143.82:8080";
 loadList();
@@ -10,7 +7,6 @@ $(document).ready(function () {
         dateFormat: 'yymmdd'
     });
     $('#signin_btn').on('click', e => {
-        let host = $('#signin_host').val()
         let user = $('#signin_user').val()
         let psw = $('#signin_psw').val()
 
@@ -50,7 +46,6 @@ $(document).ready(function () {
         }
     })
     $('#ed_btn').on('click', e => {
-        // let host = $('#signin_host').val()
         let user = $('#e_signin_user').val()
         let opsw = $('#e_signin_o_psw').val()
         let npsw = $('#e_signin_psw').val()
@@ -77,8 +72,6 @@ $(document).ready(function () {
     })
 
 
-
-    $('.host').val(block_host)
 
     $('#createQuestionModal').on('show.bs.modal', e => {
         $('#ans_right').empty()
