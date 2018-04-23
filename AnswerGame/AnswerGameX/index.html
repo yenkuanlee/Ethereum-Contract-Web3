@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
+    <title>出題答題系統</title>
+
+<style type="text/css">
+    body {
+        font-family: Microsoft JhengHei !important;
+    }
+    @media (max-width: 576px) {
+      .container {
+        padding: 0;
+      }
+    }
+    @media (min-width: 767px) {
+        .navbar-brand {
+            font-size: 30px;
+        }
+    }
+    #menu { background-color: #e3f2fd; }
+    #navbarTogglerMenu a:link, #navbarTogglerMenu a:visited {
+        text-decoration: none;
+        outline: none;
+    }
+    #navbarTogglerMenu a:hover, #navbarTogglerMenu a:focus {
+        font-weight: bold;
+    }
+    #createQuestion, #showAnswer { display: none; }
+    #signOutBtn, #signInBtn { display: none; }
+    #editAccount { display: none; }
+    .breadcrumb {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .q_content {
+        padding: 20px;
+    }
+    #showAnswerModal .row {
+        margin-bottom: 20px;
+    }
+    .re_btn {
+        display: none;
+    }
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light" id="menu">
+          <a class="navbar-brand" href="#">出題答題系統</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerMenu" aria-controls="navbarTogglerMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarTogglerMenu">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" id="createQuestion" href="#" data-toggle="modal" data-target="#createQuestionModal">新增問題</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="showAnswer" href="#" data-toggle="modal" data-target="#showAnswerModal">答題狀況</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav my-2 my-sm-0">
+              <li class="nav-item">
+                <a class="nav-link" id="signInBtn" href="#" data-toggle="modal" data-target="#signinModal">登入</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="signOutBtn" href="#">登出</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="editAccount" href="#" data-toggle="modal" data-target="#editAccountModal">修改帳戶</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">問題列表</li>
+            </ol>
+        </nav>
+
+        <div id="q_list_group" class="list-group mb-5">
+            <div id="q_template" class="list-group-item list-group-item-action flex-column align-items-start" hidden>
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">問題
+                        <span class="q_index"></span>
+                    </h5>
+                    <small class="text-muted">Deadline:
+                        <span class="deadline"></span>
+                    </small>
+                </div>
+                <p class="mb-1 q_content"></p>
+                <hr/>
+                <div class="d-flex w-100 justify-content-between">
+                    <small class="text-muted q_address"></small>
+                    <button type="button" class="btn btn-info re_btn">答題</button>
+                </div>
+            </div>
+            <div id="q_list_group_content"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">登入</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="r_form">
+                        <div class="form-group">
+                            <label for="host">Host</label>
+                            <input type="text" name="host" class="form-control host" id="signin_host" placeholder="127.0.0.1">
+                        </div>
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label for="account">帳號</label>
+                                <input type="email" name="account" class="form-control" id="signin_user" placeholder="Account">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="passwd">密碼</label>
+                                <input type="password" name="passwd" class="form-control" id="signin_psw" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="signin_btn">登入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editAccountModal" tabindex="-1" role="dialog" aria-labelledby="editAccountModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">修改</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="e_form">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="account">帳號</label>
+                                <input type="email" name="account" class="form-control" id="e_signin_user" placeholder="Account" disabled>
+                            </div>
+                            <div class="form-group col-md-6">
+                                    <label for="o_passwd">原密碼</label>
+                                    <input type="password" name="o_passwd" class="form-control" id="e_signin_o_psw" placeholder="Password">
+                                </div>
+                            <div class="form-group col-md-6">
+                                <label for="passwd">新密碼</label>
+                                <input type="password" name="passwd" class="form-control" id="e_signin_psw" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="ed_btn">修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="createQuestionModal" tabindex="-1" role="dialog" aria-labelledby="createQuestionModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">新增問題</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="create_form">
+                        <div class="form-group">
+                            <label for="question">問題內容：</label>
+                            <textarea class="form-control" name="question" id="question" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="answer">標準答案：</label>
+                            <textarea class="form-control" name="answer" id="answer" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="deadline">回答期限：</label>
+                            <input type="text" class="form-control" name="deadline" id="deadline" placeholder="20181201" value="20181201">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="create_btn">確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="showAnswerModal" tabindex="-1" role="dialog" aria-labelledby="showAnswerModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">答題狀況</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3 text-center"><label for="contract_address_t">選擇問題：</label></div>
+                        <div class="col-md-9">
+                            <select type="text" class="form-control" name="contract_address" id="contract_address_t">
+                                <option value="0">請選擇</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 text-center">標準答案：</div>
+                        <div class="col-md-9" id="ans_right"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                        <table class="table" id="ans_list">
+                            <thead>
+                                <tr>
+                                    <th width="15"></th>
+                                    <th>答對者</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="replyModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">回答問題</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="reply_form">
+                        <div class="form-group">
+                            <label for="answer">回答內容：</label>
+                            <textarea class="form-control" name="answer" id="r_answer" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="contract_address">所屬問題：</label>
+                            <input type="text" class="form-control" name="contract_address" id="r_contract_address" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="reply_btn">送出</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
