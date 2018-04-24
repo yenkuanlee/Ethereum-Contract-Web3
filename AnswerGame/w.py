@@ -27,7 +27,7 @@ abi = json.loads(abi)
 contract_instance = w3.eth.contract(abi, contract_address, ContractFactoryClass=ConciseContract)
 
 #w3.personal.unlockAccount(account, passwd)
-contract_instance.sendAnswer(answer,transact={'from': account})
+contract_instance.sendAnswer(answer.encode('latin-1', 'ignore'),transact={'from': account})
 
 #print(contract_instance.checkAnswer(passwd))
 #print(contract_instance.checkList(passwd))

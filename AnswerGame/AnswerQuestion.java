@@ -57,8 +57,9 @@ public class AnswerQuestion extends HttpServlet {
 	String host = request.getParameter("host");
 	String account = request.getParameter("account");
 	String passwd = request.getParameter("passwd");
-	String answer = request.getParameter("answer");
+	//String answer = request.getParameter("answer");
 	String contract_address = request.getParameter("contract_address");
+	String answer = new String(request.getParameter("answer").getBytes("iso-8859-1"), "UTF-8");
 	//String question = request.getParameter("question");
 	
 
