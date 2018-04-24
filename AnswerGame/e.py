@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import json
 import time
 from web3 import Web3, HTTPProvider, TestRPCProvider
@@ -21,7 +22,8 @@ abi = json.loads(abi)
 contract_instance = w3.eth.contract(abi, contract_address, ContractFactoryClass=ConciseContract)
 
 if behavior=='checkAnswer':
-    print(contract_instance.checkAnswer(passwd))
+    outputA = contract_instance.checkAnswer(passwd)
+    print("尚未公佈")
 elif behavior=='checkList':
     print(json.dumps(contract_instance.checkList(passwd)))
 

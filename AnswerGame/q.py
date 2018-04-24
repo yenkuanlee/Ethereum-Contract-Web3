@@ -83,7 +83,7 @@ w3.personal.unlockAccount(account, passwd)
 contractt = w3.eth.contract(abi=contract_interface['abi'], bytecode=contract_interface['bin'])
 
 # Get transaction hash from deployed contract
-tx_hash = contractt.deploy(args=[answer.encode('latin-1', 'ignore'),passwd,duration],transaction={'from': account, 'gas': 4000000})
+tx_hash = contractt.deploy(args=[str.encode(answer),passwd,duration],transaction={'from': account, 'gas': 4000000})
 ###print(tx_hash)
 
 # Get tx receipt to get contract address
