@@ -1,0 +1,1 @@
+{"contract_address": "0x3043E783f5579F67416F917Dfb43f476416949B6", "abi": [{"payable": false, "name": "GetEhash", "stateMutability": "view", "outputs": [{"type": "uint256", "name": ""}], "constant": true, "type": "function", "inputs": []}, {"stateMutability": "nonpayable", "payable": false, "type": "constructor", "inputs": []}]}

@@ -23,5 +23,5 @@ contract_instance = w3.eth.contract(abi, contract_address, ContractFactoryClass=
 if behavior=='checkAnswer':
     print(contract_instance.checkAnswer(passwd))
 elif behavior=='checkList':
-    print(contract_instance.checkList(passwd))
+    print(json.dumps(contract_instance.checkList(passwd)))
 
