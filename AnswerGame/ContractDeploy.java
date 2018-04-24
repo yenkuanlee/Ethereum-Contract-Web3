@@ -48,9 +48,11 @@ public class ContractDeploy extends HttpServlet {
 	String host = request.getParameter("host");
 	String account = request.getParameter("account");
 	String passwd = request.getParameter("passwd");
-	String answer = request.getParameter("answer");
+	//String answer = request.getParameter("answer");
 	String duration = request.getParameter("deadline");
-	String question = request.getParameter("question");
+	//String question = request.getParameter("question");
+	String question = new String(request.getParameter("question").getBytes("iso-8859-1"), "UTF-8");
+	String answer = new String(request.getParameter("answer").getBytes("iso-8859-1"), "UTF-8");
 	
 
 	JSONObject result = new JSONObject();
