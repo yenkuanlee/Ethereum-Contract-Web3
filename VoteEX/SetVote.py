@@ -41,12 +41,21 @@ deadline = sys.argv[7]
 Pdict = dict()
 Plist = prop.split(",,,")
 num = 0
+Nprop = ""
 for x in Plist:
-    Pdict[x] = dict()
-    Pdict[x]["num"] = num
-    Pdict[x]["cnt"] = 0
+    picture = "NULL"
+    key = x.split("@@")[0]
+    Nprop += key+",,,"
+    try:
+        picture = x.split("@@")[1]
+    except:
+        pass
+    Pdict[key] = dict()
+    Pdict[key]["num"] = num
+    Pdict[key]["cnt"] = 0
+    Pdict[key]["picture"] = picture
     num += 1
-
+prop = Nprop[:-3]
 
 # Solidity source code
 f = open(Cpath+'/votes.sol','r')
