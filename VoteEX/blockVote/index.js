@@ -155,8 +155,8 @@ v_list.length = 0
 
 var flag = 1 //是否登入之標的
 
-var ip = 'http://140.92.143.82:8080'
-// var ip = '..'
+//var ip = 'http://140.92.143.82:8080'
+ var ip = '..'
 
 $(document).ready(function () {
     getVoteAPI()

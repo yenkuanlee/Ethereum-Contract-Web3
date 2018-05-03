@@ -35,14 +35,14 @@ RUN easy_install3 pip
 RUN add-apt-repository ppa:ethereum/ethereum
 RUN apt-get update
 RUN apt-get -qqy install solc
-RUN pip3 install web3
+RUN pip3 install -Iv web3==3.16.5
 RUN pip install py-solc
 RUN apt-get install -y locales
 RUN locale-gen zh_TW zh_TW.UTF-8 zh_CN.UTF-8 en_US.UTF-8
 RUN echo 'export LC_ALL=zh_TW.utf8' >> /root/.bashrc
 
 # tomcat
-RUN cd /opt && wget http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.85/bin/apache-tomcat-7.0.85.tar.gz && tar xzf apache-tomcat-7.0.85.tar.gz&& mv apache-tomcat-7.0.85 tomcat7 && echo 'export CATALINA_HOME="/opt/tomcat7"' >> ~/.bashrc
+RUN cd /opt && wget http://www-us.apache.org/dist/tomcat/tomcat-7/v7.0.86/bin/apache-tomcat-7.0.86.tar.gz && tar xzf apache-tomcat-7.0.86.tar.gz&& mv apache-tomcat-7.0.86 tomcat7 && echo 'export CATALINA_HOME="/opt/tomcat7"' >> ~/.bashrc
 
 # Add localadmin user
 RUN useradd -m localadmin && echo "localadmin:openstack" | chpasswd && adduser localadmin sudo
